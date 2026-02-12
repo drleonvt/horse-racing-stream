@@ -1,26 +1,21 @@
 export const HORSE_NAMES = [
-  'Afitap Abla',
-  'Biletçi Kız',
-  'Çapraz Ateş',
-  'Diyarbekir',
-  'Kuzgun Bey',
-  'Tay Fark',
-  'Tarzan',
-  'Domates Güzeli',
-  'Yağmur 5',
-  'Karapınar Aslanı',
-  'Mavidalga',
-  'Big Bang',
-  'Ginny Weasley',
-  'Cash is King',
-  'Good Curry',
-  'Database',
-  'Splendid',
-  'Rainbow Storm',
-  'Masterpiece',
-  'Hidden Lake'
+  'Fukuro Nekone',
+  'Erika the Angel',
+  'Charlot Carrusel',
+  'Maire Anne',
+  'Lady Luck',
+  'Leon "Sexy" Kennedy',
+  'Cloe Gold',
+  'Happy Day',
+  'Holiday Fun',
+  'Deddo Nekku',
+  'Silver Sun',
 ]
 
 
-//! Atın hızını belirlemek için kullanılan sabit değer bu değeri değiştirerek atların hızını değiştirebilirsiniz
-export const SPEED_FACTOR = 5
+export const SPEED_FACTOR = 2
+
+export const CONDITION_MIN = 30
+export const CONDITION_MAX = 100
+
+export const HORSE_COUNT = 10

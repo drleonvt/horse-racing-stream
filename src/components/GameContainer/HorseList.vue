@@ -17,7 +17,7 @@ export default defineComponent({
 
 <template>
   <div class="w-[300px]">
-    <Heading title="Horse List (1-20)" class="header" />
+    <Heading :title="'Horse List (1-'+ HORSES.length + ')'" class="header" />
     <div class="h-[calc(100%-40px)] divide-y overflow-auto">
       <div v-for="{name, condition, color} in HORSES" class="p-2.5">
         <HorseNameAndColor :name="name" :color="color" />

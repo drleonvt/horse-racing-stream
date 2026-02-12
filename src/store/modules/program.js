@@ -62,6 +62,7 @@ export default {
       if (!currentRound) return state?.program?.rounds[0]?.horses
       return currentRound?.horses
     },
+    _GET_ROUNDS: state => state.program?.rounds,
     _IS_RACE_FINISHED: state => state.program?.rounds.every(round => round.isFinished),
     _IS_RACE_RUNNING: state => state.program?.isRunning,
     _GET_CURRENT_ROUND: state => state.program?.rounds.find(round => round.isActive),
