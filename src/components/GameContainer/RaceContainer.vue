@@ -10,7 +10,8 @@ export default {
     ...mapGetters({
       ROUND_HORSE_LIST: 'program/_GET_CURRENT_PROGRAM_HORSES',
       IS_RACE_RUNNING: 'program/_IS_RACE_RUNNING',
-      CURRENT_ROUND: 'program/_GET_CURRENT_ROUND'
+      CURRENT_ROUND: 'program/_GET_CURRENT_ROUND',
+      ROUNDS: 'program/_GET_ROUNDS'
     })
   }
 }
@@ -19,12 +20,17 @@ export default {
 <template>
   <div class="race-container">
     <div class="flex gap-y-2 flex-col items-center my-auto w-full py-2.5">
-      <template v-if="CURRENT_ROUND">
-        <div class="flex flex-col gap-y-1 w-full">
-          <RaceTrack
+      <template v-if="ROUNDS">
+        <div class="flex flex-row w-full">
+          <div class="flex flex-col gap-y-1 w-full" v-for="(currentRound, roundIdx) in ROUNDS">
+            <RaceTrack
               v-for="(horse, idx) in ROUND_HORSE_LIST"
-              :key="`race-track-${CURRENT_ROUND?.id}_${horse.id}`"
-              :horse="horse" :idx="idx" />
+              :key="`race-track-${currentRound?.id}_${horse.id}`"
+              :roundIdx="roundIdx !== ROUNDS.length - 1 ? roundIdx : undefined"
+              :round="currentRound"
+              :horse="horse"
+              :idx="idx" />
+          </div>
         </div>
         <div v-if="CURRENT_ROUND" class="round-name">{{ CURRENT_ROUND?.title }} - {{ CURRENT_ROUND?.distance }}m</div>
       </template>

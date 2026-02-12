@@ -19,6 +19,17 @@ export default {
       validator(value) {
         return value.hasOwnProperty('id') && value.hasOwnProperty('name') && value.hasOwnProperty('condition')
       }
+    },
+    roundIdx: {
+      type: Number,
+      required: false,
+    },
+    round: {
+      type: Object,
+      required: true,
+      validator(value) {
+        return value.hasOwnProperty('id')
+      }
     }
   },
   mounted() {
@@ -30,24 +41,23 @@ export default {
       SET_HORSE_FINISHED: 'program/SET_HORSE_FINISHED'
     }),
     ADD_ANIMATION_END_LISTENER() {
-      //! Animasyon yani At yarışı bitince atın durumunu güncelleyelim
       this.horseElement.addEventListener('animationend', () => {
         this.SET_HORSE_FINISHED({ roundId: this.CURRENT_ROUND.id, horseId: this.horse?.id })
       })
     },
     SET_HORSE_SPEED() {
-      //! Atın gideceği bölgeyi ve Süreyi hesaplayabilmek için gidilecek yolun genişliğini alalım
-      const container = this.$refs.raceTrack
-      const containerWidth = container.offsetWidth // Container genişliği
+      if (this.round.id === this.CURRENT_ROUND.id) {
+        const container = this.$refs.raceTrack
+        const containerWidth = container.offsetWidth // Container genişliği
+        console.log(container.offsetWidth);
 
-      //! Condition bilgisine göre hızı hesaplayalım
-      const speed = this.horse?.condition * SPEED_FACTOR // Atın hızı
-      const duration = CALCULATE_DURATION(this.CURRENT_ROUND.distance, containerWidth, speed)
+        const speed = this.horse?.condition * SPEED_FACTOR // Atın hızı
+        const duration = CALCULATE_DURATION(this.CURRENT_ROUND.distance, containerWidth, speed)
 
-      //! Gidilecek mesafeyi ve süreyi Element'e set et
-      this.horseElement.style.setProperty('--duration', `${duration}s`)
-      this.horseElement.style.setProperty('--target-width', `${containerWidth - 40}px`) // Container genişliği
-      this.horseElement.style.animationPlayState = 'running'
+        this.horseElement.style.setProperty('--duration', `${duration}s`)
+        this.horseElement.style.setProperty('--target-width', `${containerWidth + 40}px`) // Container genişliği
+        this.horseElement.style.animationPlayState = 'running'
+      }
     }
   },
   computed: {
@@ -91,13 +101,10 @@ export default {
 </script>
 
 <template>
-  <div ref="raceTrack" class="race-track">
-    <div class="track-no-container" :style="trackNoStyles">
-      <span class="rotate-90">{{ idx + 1 }}</span>
-    </div>
+  <div ref="raceTrack" class="race-track" :class="{'goal-mark': roundIdx !== 0 && !roundIdx}">
     <div class="horse-container">
       <div ref="horse" class="horse animate-move relative">
-        <span class="horse-name" :style="horseNameStyles">{{ horse.name }} ({{ horse.condition }})</span>
+        <!-- <span class="horse-name" :style="horseNameStyles">{{ horse.name }} ({{ horse.condition }})</span> -->
         <AppIcon icon="horse" class="w-10 h-10" :style="horseIconStyles" />
       </div>
     </div>
@@ -106,13 +113,13 @@ export default {
 
 <style scoped>
 .horse {
-  @apply w-10 h-10;
+  @apply w-10 h-10 -left-12;
   animation-fill-mode: both;
   animation-play-state: paused;
 }
 
 .race-track {
-  @apply relative flex items-center justify-start border border-dashed border-zinc-300 shadow-sm h-16;
+  @apply relative flex items-center justify-start border-y border-dashed border-zinc-300 h-16 overflow-hidden;
 }
 
 .track-no-container {
@@ -127,7 +134,7 @@ export default {
   @apply absolute top-1/2 whitespace-nowrap -ml-3 -translate-x-full -translate-y-1/2 px-2 rounded-md text-white font-medium bg-zinc-200 text-xs;
 }
 
-.race-track::after {
+.goal-mark::after {
   content: "";
   position: absolute;
   top: 0;
